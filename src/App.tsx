@@ -1,42 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
 import './index.css';
 
+import { productList } from './data';
+import CartProduct from './Compones/CartProduct';
+
+const log = (message: string, data?: any) => {
+  console.log("*********************************************************************************************");
+  console.log(message, data);
+  console.log("*********************************************************************************************");
+};
+
 function App() {
-  const [count, setCount] = useState(0)
+  log("Test message", "This is a test");
 
+  const models = productList.map(e => <CartProduct key={e.id} product={e} />);
+ 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      
-      <h1>Vite + React</h1>
-      
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <h1 className="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 '>
+      {models}
+    </div>
+  );
 }
 
-export default App
+export default App;
