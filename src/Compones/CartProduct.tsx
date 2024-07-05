@@ -10,34 +10,38 @@ interface IProms{
 const CartProduct = ({product}:IProms) => {
   console.log(product);
   return (
-    <div className="border p-5 m-1">
+    <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3">
+      {/* max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3 */}
       {/* ImageProduct */}
       <ImageProduct 
         src={product.imageURL} 
         alt={product.title} 
-        className="rounded-md mt-2" 
+        className="rounded-md mt-2 w-full  h-full lg:object-cover" 
+        // className="rounded-md mt-2 w-full object-cover"
+
       />
-      <h2>{product.title} </h2>
-      <p >
-      {textDoc(product.description)} 
-      </p>
-      <div className="flex items-center space-x-2 cursor-pointer my-4">
+      <h2 className="text-lg font-semibold ">{textDoc(product.title,20)} </h2>
+     
+      <div className="h-70" > <p className="text-sm text-gray-500 break-words line-clamp-4" >
+      {product.description} 
+      </p></div>
+      <div className="flex items-center flex-wrap space-x-1">
         <span className="w-5 h-5 rounded-full bg-red-700"></span>
         <span className="w-5 h-5 rounded-full bg-blue-500"></span>
         <span className="w-5 h-5 rounded-full bg-black"></span>
         <span className="w-5 h-5 rounded-full bg-yellow-400"></span>
       </div>
       <div className="flex items-center justify-between ">
-        <span>{product.price} $</span>
+        <span className="text-lg text-indigo-600 font-semibold">{product.price} $</span>
         <ImageProduct 
           className="rounded-full h-10 w-10" 
-          src={product.imageURL} 
+          src={product.category.imageURL} 
           alt={product.title} 
         />
       </div>
       <div className="flex items-center justify-between space-x-2 mt-5">
        <Button className="bg-indigo-600" onClick={() => {alert("روح تعطي")}}>Edit</Button>
-        <Button className="bg-red-600 "  width={"w-fit"}  onClick={()=>{console.log("Edit")}}>
+        <Button className="bg-red-600 "    onClick={()=>{console.log("Edit")}}>
           Delete
         </Button>
       </div>
