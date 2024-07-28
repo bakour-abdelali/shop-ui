@@ -1,12 +1,13 @@
 
 import './index.css';
 
-import { productList } from './data';
+import { formInputsList, productList } from './data';
 import CartProduct from './Compones/CartProduct';
 
 import { useState } from 'react';
 import { MyModal } from './Compones/ui/modle';
 import Button from './Compones/ui/Button';
+import { Input } from '@headlessui/react';
 
 
 function App() {
@@ -29,16 +30,36 @@ function App() {
   // data
 
   const models = productList.map(e => <CartProduct key={e.id} product={e} />);
- 
+  const from:JSX.Element[] = formInputsList.map(e=><div className='flex flex-col ' >
+    <label htmlFor={e.label} className="mb-1">{e.name}</label>
+     <Input   
+            className=" border-[1px] border-gray-300 shadow-md
+              focus:border-indigo-500
+                focus:outline-none
+                focus:ring-1
+              focus:ring-indigo-500
+                rounded-md px-3 py-3 text-md"   type={e.type} id={e.id}  />
+  </div>)
+
   return (
     <main className='container '>  
       <div className='p-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-4  rounded-md m-5'>
     {models}
   </div>
-  <div><MyModal isOpen={isOpen}  closeModal={()=>closeModal() }  title={"Add product"}>
-    <Button className="bg-indigo-600" onClick={() => {closeModal()}} >Done</Button>
-    <Button className="bg-indigo-600" onClick={() => {closeModal()}} >close</Button>
-    </MyModal></div>
+  
+    <MyModal isOpen={isOpen}  closeModal={()=>closeModal() }  title={"Add product"}>
+      <div className='space-y-2'>
+      {from}
+        
+    <div className='flex items-center space-x-2'>
+      <Button className="bg-indigo-600" onClick={() => {closeModal()}} >Done</Button>
+    <Button className="bg-gray-400" onClick={() => {closeModal()}} >close</Button>
+    </div>
+
+      </div>
+  
+    
+    </MyModal>
   
   </main>
   
