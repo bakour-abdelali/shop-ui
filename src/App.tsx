@@ -4,18 +4,37 @@ import './index.css';
 import { formInputsList, productList } from './data';
 import CartProduct from './Compones/CartProduct';
 
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { MyModal } from './Compones/ui/modle';
 import Button from './Compones/ui/Button';
 import { Input } from '@headlessui/react';
+import { IProduct } from './interfaces';
 
 
 function App() {
   // state 
   const [isOpen, setIsOpen] = useState(true)
+  const [prduct, setProduct] = useState<IProduct>(
+  {
+    title:"",
+    description:"",
+    price:"",
+    imageURL:"",
+    colors:[],
+    category:{
+      imageURL:"",
+      name:"",
+    }
+  }
+  )
 
 
-
+  const onChangeHandlinf=(e:ChangeEvent<HTMLInputElement> )=>{
+    console.log(e.target.name);
+    console.log(e.target.value);
+    const  {name,value}=e.target;
+    setProduct({...prduct,[name]:value});
+  };
 
 
 // function
@@ -38,7 +57,7 @@ function App() {
                 focus:outline-none
                 focus:ring-1
               focus:ring-indigo-500
-                rounded-md px-3 py-3 text-md"   type={e.type} id={e.id}  />
+                rounded-md px-3 py-3 text-md"   type={e.type} id={e.id}  value={prduct[e.name]} onChange={onChangeHandlinf}  />
   </div>)
 
   return (
