@@ -18,8 +18,9 @@ function App() {
   {
     title:"",
     description:"",
-    price:"",
     imageURL:"",
+    price:"",
+   
     colors:[],
     category:{
       imageURL:"",
@@ -30,10 +31,13 @@ function App() {
 
 
   const onChangeHandlinf=(e:ChangeEvent<HTMLInputElement> )=>{
+    console.log("*************************************************");
     console.log(e.target.name);
     console.log(e.target.value);
     const  {name,value}=e.target;
     setProduct({...prduct,[name]:value});
+    console.log(prduct);
+    console.log("*************************************************");
   };
 
 
@@ -57,7 +61,12 @@ function App() {
                 focus:outline-none
                 focus:ring-1
               focus:ring-indigo-500
-                rounded-md px-3 py-3 text-md"   type={e.type} id={e.id}  value={prduct[e.name]} onChange={onChangeHandlinf}  />
+                rounded-md px-3 py-3 text-md"   
+                type={e.type} 
+                id={e.id} 
+                name={e.name}
+                value={prduct[e.name]}
+                 onChange={onChangeHandlinf}  />
   </div>)
 
   return (
