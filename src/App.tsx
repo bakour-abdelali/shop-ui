@@ -4,18 +4,17 @@ import './index.css';
 import { formInputsList, productList } from './data';
 import CartProduct from './Compones/CartProduct';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { MyModal } from './Compones/ui/modle';
 import Button from './Compones/ui/Button';
 import { Input } from '@headlessui/react';
 import { IProduct } from './interfaces';
+import { validationProduct } from './validation';
+import ErrorHandling from './Compones/ui/ErrorHandling';
 
 
 function App() {
-  // state 
-  const [isOpen, setIsOpen] = useState(true)
-  const [prduct, setProduct] = useState<IProduct>(
-  {
+  const defaultProduct=  {
     title:"",
     description:"",
     imageURL:"",
@@ -26,18 +25,31 @@ function App() {
       imageURL:"",
       name:"",
     }
+  };
+  const defaultError={  title:"",
+    description:"",
+    imageURL:"",
+    price:""}
+  // state 
+  const [isOpen, setIsOpen] = useState(true)
+  const [errors,setErrors]=useState<{  title:string,description:string,imageURL:string,price:string,}>(
+    defaultError)
+  const [prduct, setProduct] = useState<IProduct>(defaultProduct)
+  const onClose=()=>{
+    setProduct(defaultProduct);
+    // setIsOpen(false);
+
   }
-  )
 
 
   const onChangeHandlinf=(e:ChangeEvent<HTMLInputElement> )=>{
-    console.log("*************************************************");
-    console.log(e.target.name);
-    console.log(e.target.value);
+   
     const  {name,value}=e.target;
     setProduct({...prduct,[name]:value});
-    console.log(prduct);
-    console.log("*************************************************");
+    setErrors({...errors,[name]:""});
+  
+  
+   
   };
 
 
@@ -49,6 +61,26 @@ function App() {
   function openModal() {
     setIsOpen(true)
   }
+  const onSubmit=(s:FormEvent<HTMLFormElement> ):void=>{
+    s.preventDefault();
+    const error=validationProduct(
+      {title:prduct.title,description:prduct.description,imageURL:prduct.imageURL,price:prduct.price}
+    );
+    
+    
+    const hasError:boolean=Object.values(error).every((e)=>e=='');
+    console.log(error);
+    console.log(hasError);
+
+    if(!hasError){
+      setErrors(error);
+      return;
+    }else{
+      setErrors(defaultError);
+      console.log("sand data in api");
+    }
+
+  };
   
   // data
 
@@ -67,6 +99,7 @@ function App() {
                 name={e.name}
                 value={prduct[e.name]}
                  onChange={onChangeHandlinf}  />
+                 <ErrorHandling msg={errors[e.name]} />
   </div>)
 
   return (
@@ -76,15 +109,15 @@ function App() {
   </div>
   
     <MyModal isOpen={isOpen}  closeModal={()=>closeModal() }  title={"Add product"}>
-      <div className='space-y-2'>
+      <form className='space-y-2' onSubmit={onSubmit}>
       {from}
         
     <div className='flex items-center space-x-2'>
-      <Button className="bg-indigo-600" onClick={() => {closeModal()}} >Done</Button>
-    <Button className="bg-gray-400" onClick={() => {closeModal()}} >close</Button>
+      <Button className="bg-indigo-600" type='submit' >Submit</Button>
+    <Button className="bg-gray-400" onClick={onClose}>close</Button>
     </div>
 
-      </div>
+      </form>
   
     
     </MyModal>
