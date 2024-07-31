@@ -8,7 +8,7 @@ interface IProms{
   product:IProduct
 }
 const CartProduct = ({product}:IProms) => {
-  console.log(product);
+  
   return (
     <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3">
       {/* max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3 */}
@@ -26,10 +26,9 @@ const CartProduct = ({product}:IProms) => {
       {product.description} 
       </p></div>
       <div className="flex items-center flex-wrap space-x-1">
-        <span className="w-5 h-5 rounded-full bg-red-700"></span>
-        <span className="w-5 h-5 rounded-full bg-blue-500"></span>
-        <span className="w-5 h-5 rounded-full bg-black"></span>
-        <span className="w-5 h-5 rounded-full bg-yellow-400"></span>
+        {product.colors.map(e=><span className="w-5 h-5 rounded-full " style={{background:e}}></span>)}
+        
+     
       </div>
       <div className="flex items-center justify-between ">
         <span className="text-lg text-indigo-600 font-semibold">{product.price} $</span>

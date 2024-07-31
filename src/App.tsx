@@ -1,7 +1,7 @@
 
 import './index.css';
 
-import { formInputsList, productList } from './data';
+import { colors, formInputsList, productList } from './data';
 import CartProduct from './Compones/CartProduct';
 
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -11,6 +11,8 @@ import { Input } from '@headlessui/react';
 import { IProduct } from './interfaces';
 import { validationProduct } from './validation';
 import ErrorHandling from './Compones/ui/ErrorHandling';
+import CirclerColor from './Compones/ui/CirclerColor';
+import { v4 as uuid } from "uuid";
 
 
 function App() {
@@ -34,7 +36,11 @@ function App() {
   const [isOpen, setIsOpen] = useState(true)
   const [errors,setErrors]=useState<{  title:string,description:string,imageURL:string,price:string,}>(
     defaultError)
+  const [prducts, setProducts] = useState<IProduct[]>(productList)
   const [prduct, setProduct] = useState<IProduct>(defaultProduct)
+
+  const [temp,setTemp]=useState<string[]>([]);
+  console.log(temp)
   const onClose=()=>{
     setProduct(defaultProduct);
     // setIsOpen(false);
@@ -77,6 +83,11 @@ function App() {
       return;
     }else{
       setErrors(defaultError);
+      setProducts(prev=>[{...prduct,colors:temp,id:uuid()},...prev])
+      setProduct(defaultProduct);
+      setTemp([]);
+      closeModal();
+
       console.log("sand data in api");
     }
 
@@ -84,7 +95,16 @@ function App() {
   
   // data
 
-  const models = productList.map(e => <CartProduct key={e.id} product={e} />);
+  const models = prducts.map(e => <CartProduct key={e.id} product={e} />);
+  const colorsProduct=colors.map(color=><CirclerColor key={color} color={color} onClick={()=>{
+    if(temp.includes(color)){
+      setTemp(element=>element.filter(t=>t!=color));
+      return;
+    }
+    setTemp(element=>[...element,color]);
+    console.log(temp);
+
+  }}/>);
   const from:JSX.Element[] = formInputsList.map(e=><div className='flex flex-col ' >
     <label htmlFor={e.label} className="mb-1">{e.name}</label>
      <Input   
@@ -111,6 +131,12 @@ function App() {
     <MyModal isOpen={isOpen}  closeModal={()=>closeModal() }  title={"Add product"}>
       <form className='space-y-2' onSubmit={onSubmit}>
       {from}
+      <div className='flex items-center space-x-2'>
+      {colorsProduct}
+      </div>
+      <div className='flex items-center flex-wrap space-x-2 space-y-2'>
+      {temp.map(t=><span className="block rounded-md text-white p-2" style={{backgroundColor:t}} >{t}</span>)}
+      </div>
         
     <div className='flex items-center space-x-2'>
       <Button className="bg-indigo-600" type='submit' >Submit</Button>
