@@ -5,9 +5,12 @@ import ImageProduct from "./imageProduct";
 import Button from "./ui/Button";
 
 interface IProms{
-  product:IProduct
+  product:IProduct,
+  editeProduct:(product:IProduct )=>void,
+  deleteProduct:(product:IProduct )=>void,
 }
-const CartProduct = ({product}:IProms) => {
+const CartProduct = ({product,editeProduct,deleteProduct}:IProms) => {
+  
   
   return (
     <div className="max-w-sm md:max-w-lg mx-auto md:mx-0 border rounded-md p-2 flex flex-col space-y-3">
@@ -39,8 +42,8 @@ const CartProduct = ({product}:IProms) => {
         />
       </div>
       <div className="flex items-center justify-between space-x-2 mt-5">
-       <Button className="bg-indigo-600" onClick={() => {alert("روح تعطي")}}>Edit</Button>
-        <Button className="bg-red-600 "    onClick={()=>{console.log("Edit")}}>
+       <Button className="bg-indigo-600" onClick={() => {editeProduct(product)}}>Edit</Button>
+        <Button className="bg-red-600 "    onClick={()=>{deleteProduct(product)}}>
           Delete
         </Button>
       </div>
